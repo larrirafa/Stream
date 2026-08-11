@@ -1,7 +1,9 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
         ArrayList<String> lista = new ArrayList<>();
         Scanner scan = new Scanner(System.in);
@@ -23,20 +25,29 @@ public class Main {
             }
         }
 
-        // Filtragem com Lambda (corrigido o operador ->)
-        ArrayList<String> listaMulheres = new ArrayList<>(
-            lista.stream()
-                .filter(p -> {
-                    String[] partes = p.split("-");
-                    return partes.length > 1 && partes[1].trim().toLowerCase().startsWith("f");
-                })
-                .toList()
-        );
+        ArrayList<String> listaMulheres = filtrarMulheres(lista);
 
-        // Exibindo o resultado (corrigido o nome da variável para listaMulheres)
+        // Exibindo o resultado
         System.out.println("\n--- Lista de Mulheres ---");
         listaMulheres.forEach(System.out::println);
 
         scan.close(); // Boa prática fechar o scanner
+    }
+
+    /**
+     * Filtra uma lista de entradas no formato "Nome-Sexo" e retorna apenas
+     * aquelas cujo sexo comece com "f" (ex: "Feminino", "F", "feminino").
+     * Extraído do main() para poder ser testado isoladamente com JUnit.
+     */
+    public static ArrayList<String> filtrarMulheres(List<String> lista) {
+        return new ArrayList<>(
+                lista.stream()
+                        .filter(p -> {
+                            String[] partes = p.split("-");
+                            return partes.length > 1
+                                    && partes[1].trim().toLowerCase().startsWith("f");
+                        })
+                        .toList()
+        );
     }
 }
